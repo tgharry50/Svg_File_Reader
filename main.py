@@ -1,5 +1,4 @@
 import sys
-import tkinter as tk
 import customtkinter
 from tkinter import filedialog
 import os
@@ -7,7 +6,7 @@ import re
 import shutil
 import glob
 import subprocess
-from PIL import Image, ImageTk
+from PIL import Image
 import time
 wz_path = None
 BigImage_path = None
@@ -43,9 +42,13 @@ class App(customtkinter.CTk):
         os.makedirs(wzór)
         os.makedirs(save)
         target = os.path.join(wzór, "wzor.txt")
+        targer2 = os.path.join(wzór, "oki.txt")
         File = open(target, "w")
         File.write("1_OK\n2_NOK")
         File.close()
+        File2 = open(targer2, "w")
+        File2.write("1_OK\n1_OK")
+        File2.close()
     def edit(self):
         subprocess.Popen(["notepad","./Example/wzor.txt"])
     def BigImage_Path(self):
@@ -62,6 +65,7 @@ class App(customtkinter.CTk):
         BigImage_version = glob.glob(f'{BigImage_path}\*.jpg')
         txt_file = "./Example/wzor.txt"
         tflite_file = "./Example/wzor.tflite"
+        ok_file = "./Example/oki.txt"
         with open(file_path, "r") as f:
             svg_data = f.read()
         # Plik wz
@@ -109,15 +113,12 @@ class App(customtkinter.CTk):
             label = roi_label[item]
             temp = label.split("_")
             smth = temp[0]
-            print("TO jest label: ", label)
-            print(x,y,width,height)
             # kameras = kamera[item]
             x_final = round(float(x)) + round(float(width))
             y_final = round(float(y)) + round(float(height))
             x_int = round(float(x))
             y_int = round(float(y))
             roi_data = f"({x_int}, {y_int}, {round(float(width))}, {round(float(height))})"
-            print(roi_data)
             ##obraz
             for big in BigImage_version:
                 Bigimage = Image.open(big)
@@ -131,15 +132,18 @@ class App(customtkinter.CTk):
                 self.labes.destroy()
             ##Folder
             roi_folder_path = os.path.join(os.path.dirname(file_path), f"{name}_{label}")
+            ok_path = os.path.join(os.path.dirname(file_path), "Tylko_Oki")
             os.makedirs(roi_folder_path, exist_ok=True)
+            os.makedirs(ok_path, exist_ok=True)
             wasd = file_path.split("/")
             rasd = wasd[:-1]
             nasd = "/".join(rasd)
+            print(f'{nasd} < nasd')
             with open("./Example/wzor.txt") as fp:
                 lines = fp.read().splitlines()
-            for file in lines:
-                shutil.copy2(txt_file, f'{nasd}/{name}_{smth}.txt')
-                shutil.copy2(tflite_file, f'{nasd}/{name}_{smth}.tflite')
+            shutil.copy2(txt_file, f'{nasd}/{name}_{smth}.txt')
+            shutil.copy2(tflite_file, f'{nasd}/{name}_{smth}.tflite')
+            shutil.copy2(ok_file, f'{nasd}/Tylko_Oki/{name}_{smth}.txt')
             ##Zapis
             for folder_name in lines:
                 folder_path = os.path.join(roi_folder_path, folder_name)
@@ -148,8 +152,6 @@ class App(customtkinter.CTk):
                 output_file_path = os.path.join(os.path.dirname(file_path), f"{name}_{label}.txt")
                 with open(output_file_path, "w") as f:
                     f.write(roi_data)
-                print(
-                    f"Zapisano dane dla ROI {name} w pliku {output_file_path} oraz utworzono foldery dla ROI w katalogu {roi_folder_path}")
             self.button1 = customtkinter.CTkButton(self, text="Wybierz Big", command=self.BigImage_Path,fg_color="blue")
             self.button1.grid(row=1, column=0, padx=5, pady=2)
             self.button2 = customtkinter.CTkButton(self, text="Wybierz SVG", command=self.Svg_Path, fg_color="blue")
@@ -159,8 +161,5 @@ class App(customtkinter.CTk):
         self.quit()
         self.destroy()
         sys.exit()
-
-
-
 app = App()
 app.mainloop()

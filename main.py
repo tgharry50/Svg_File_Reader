@@ -1,4 +1,5 @@
 import sys
+import tkinter as tk
 import customtkinter
 from tkinter import filedialog
 import os
@@ -62,7 +63,7 @@ class App(customtkinter.CTk):
         self.button2 = customtkinter.CTkButton(self, text="Wybierz SVG", command=self.Svg_Path, fg_color="green")
         self.button2.grid(row=2, column=0, padx=5, pady=2)
     def Start(self):
-        BigImage_version = glob.glob(f'{BigImage_path}\*.jpg')
+        BigImage_version = glob.glob(f'{BigImage_path}/*.jpg')
         txt_file = "./Example/wzor.txt"
         tflite_file = "./Example/wzor.tflite"
         ok_file = "./Example/oki.txt"

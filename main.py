@@ -39,17 +39,30 @@ class App(customtkinter.CTk):
 
     wzór = "./Example"
     save = "./Result"
+    conf = "./Config"
     if not os.path.exists(wzór):
         os.makedirs(wzór)
         os.makedirs(save)
         target = os.path.join(wzór, "wzor.txt")
-        targer2 = os.path.join(wzór, "oki.txt")
+        target2 = os.path.join(wzór, "oki.txt")
+        #
         File = open(target, "w")
         File.write("1_OK\n2_NOK")
         File.close()
-        File2 = open(targer2, "w")
+        #
+        File2 = open(target2, "w")
         File2.write("1_OK\n1_OK")
         File2.close()
+        #
+
+    if not os.path.exists(conf):
+        os.makedirs(conf)
+        target3 = os.path.join(conf, "config.txt")
+        #
+        File3 = open(target3, "w")
+        File3.write("w=242\nh=242")
+        File3.close()
+        #
     def edit(self):
         subprocess.Popen(["notepad","./Example/wzor.txt"])
     def BigImage_Path(self):
@@ -67,6 +80,17 @@ class App(customtkinter.CTk):
         txt_file = "./Example/wzor.txt"
         tflite_file = "./Example/wzor.tflite"
         ok_file = "./Example/oki.txt"
+        #####
+        configuration = "./Config/config.txt"
+        cvn = open(configuration, "r")
+        cvnb = cvn.read()
+        sw = re.findall(r'w=(.+)', cvnb)
+        sww = sw[0]
+        w = int(sww)
+        sh = re.findall(r'h=(.+)', cvnb)
+        shh = sh[0]
+        h = int(shh)
+        #####
         with open(file_path, "r") as f:
             svg_data = f.read()
         # Plik wz
@@ -123,7 +147,7 @@ class App(customtkinter.CTk):
             ##obraz
             for big in BigImage_version:
                 Bigimage = Image.open(big)
-                Big_Image_Crop = Bigimage.crop((x_int, y_int, x_final, y_final)).resize((299, 299), Image.LANCZOS)
+                Big_Image_Crop = Bigimage.crop((x_int, y_int, x_final, y_final)).resize((w, h), Image.LANCZOS)
                 img = customtkinter.CTkImage(light_image=Big_Image_Crop, dark_image=Big_Image_Crop, size=(250,250))
                 self.labes = customtkinter.CTkLabel(self, image=img, width=250, height=250, text = "")
                 self.labes.grid(row=5, column=0)

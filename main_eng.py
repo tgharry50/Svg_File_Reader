@@ -1,5 +1,4 @@
 import sys #line:1
-import tkinter as tk #line:2
 import customtkinter #line:3
 from tkinter import filedialog #line:4
 import os #line:5
@@ -13,6 +12,8 @@ wz_path =None #line:12
 BigImage_path =None #line:13
 file_path =None #line:14
 global img #line:15
+
+
 class App (customtkinter .CTk ):#line:17
     def __init__ (OOO0000O000OO0O0O ):#line:18
         super ().__init__ ()#line:19
@@ -20,7 +21,7 @@ class App (customtkinter .CTk ):#line:17
         OOO0000O000OO0O0O .resizable (width =False ,height =False )#line:22
         OOO0000O000OO0O0O .geometry ("300x400")#line:23
         OOO0000O000OO0O0O .grid_columnconfigure (0 ,weight =1 )#line:24
-        OOO0000O000OO0O0O .button =customtkinter .CTkButton (OOO0000O000OO0O0O ,text ="Edid example",command =OOO0000O000OO0O0O .edit ,fg_color ="green")#line:26
+        OOO0000O000OO0O0O .button =customtkinter .CTkButton (OOO0000O000OO0O0O ,text ="Edit example",command =OOO0000O000OO0O0O .edit ,fg_color ="green")#line:26
         OOO0000O000OO0O0O .button .grid (row =0 ,column =0 ,padx =5 ,pady =2 ,)#line:27
         OOO0000O000OO0O0O .button1 =customtkinter .CTkButton (OOO0000O000OO0O0O ,text ="Select BIG file",command =OOO0000O000OO0O0O .BigImage_Path ,fg_color ="blue")#line:29
         OOO0000O000OO0O0O .button1 .grid (row =1 ,column =0 ,padx =5 ,pady =2 )#line:30
